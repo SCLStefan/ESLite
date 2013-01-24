@@ -32,8 +32,10 @@ using System.Data;
 using System.Data.SqlServerCe;
 
 #if (LINQ)
+
 using System.Linq;
 using System.Data.Linq;
+
 #endif
 
 using EntitySpaces.DynamicQuery;
@@ -48,7 +50,6 @@ namespace EntitySpaces.SqlServerCe4Provider
     {
         public DataProvider()
         {
-
         }
 
         #region esTraceArguments
@@ -60,15 +61,18 @@ namespace EntitySpaces.SqlServerCe4Provider
             private sealed class esTraceParameter : ITraceParameter
             {
                 public string Name { get; set; }
+
                 public string Direction { get; set; }
+
                 public string ParamType { get; set; }
+
                 public string BeforeValue { get; set; }
+
                 public string AfterValue { get; set; }
             }
 
             public esTraceArguments()
             {
-
             }
 
             public esTraceArguments(esDataRequest request, IDbCommand cmd, esEntitySavePacket packet, string action, string callStack)
@@ -180,17 +184,29 @@ namespace EntitySpaces.SqlServerCe4Provider
             private IDbCommand command;
 
             public long PacketOrder { get; set; }
+
             public string Syntax { get; set; }
+
             public esDataRequest Request { get; set; }
+
             public int ThreadId { get; set; }
+
             public string Action { get; set; }
+
             public string CallStack { get; set; }
+
             public IDbCommand SqlCommand { get; set; }
+
             public string ApplicationName { get; set; }
+
             public string TraceChannel { get; set; }
+
             public long Duration { get; set; }
+
             public long Ticks { get; set; }
+
             public string Exception { get; set; }
+
             public List<ITraceParameter> Parameters { get; set; }
 
             private Stopwatch stopwatch;
@@ -222,7 +238,7 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
         }
 
-        #endregion
+        #endregion esTraceArguments
 
         #region Profiling Logic
 
@@ -234,6 +250,7 @@ namespace EntitySpaces.SqlServerCe4Provider
             add { DataProvider.sTraceHandler += value; }
             remove { DataProvider.sTraceHandler -= value; }
         }
+
         static private event TraceEventHandler sTraceHandler;
 
         /// <summary>
@@ -255,9 +272,10 @@ namespace EntitySpaces.SqlServerCe4Provider
             get { return DataProvider.sTraceChannel; }
             set { DataProvider.sTraceChannel = value; }
         }
+
         static private string sTraceChannel = "Channel1";
 
-        #endregion
+        #endregion Profiling Logic
 
         /// <summary>
         /// This method acts as a delegate for esTransactionScope
@@ -312,14 +330,6 @@ namespace EntitySpaces.SqlServerCe4Provider
                         SqlCeCommand cmd1 = QueryBuilder.PrepareCommand(request);
                         response.LastQuery = cmd1.CommandText;
                         break;
-
-#if (LINQ)
-                    case esQueryType.IQueryable:
-
-                        response = new esDataResponse();
-                        LoadDataTableForLinqToSql(request, response);
-                        break;
-#endif
 
                     case esQueryType.ManyToMany:
 
@@ -400,6 +410,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteNonQuery", System.Environment.StackTrace))
@@ -416,7 +427,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.RowsEffected = cmd.ExecuteNonQuery();
                     }
@@ -477,6 +490,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                 cmd.Connection.Open();
 
                 #region Profiling
+
                 if (sTraceHandler != null)
                 {
                     using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteReader", System.Environment.StackTrace))
@@ -493,7 +507,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                     }
                 }
                 else
-                #endregion
+
+                #endregion Profiling
+
                 {
                     response.DataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
@@ -545,6 +561,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteScalar", System.Environment.StackTrace))
@@ -561,7 +578,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.Scalar = cmd.ExecuteScalar();
                     }
@@ -645,7 +664,7 @@ namespace EntitySpaces.SqlServerCe4Provider
             return response;
         }
 
-        #endregion
+        #endregion IDataProvider Members
 
         static private esDataResponse LoadDataSetFromStoredProcedure(esDataRequest request)
         {
@@ -671,6 +690,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -687,7 +707,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -711,7 +733,6 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -739,6 +760,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadDataSetFromText", System.Environment.StackTrace))
@@ -755,7 +777,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -779,7 +803,6 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -808,6 +831,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -824,7 +848,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -848,7 +874,6 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -877,6 +902,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromText", System.Environment.StackTrace))
@@ -893,7 +919,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -917,7 +945,6 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -968,6 +995,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadManyToMany", System.Environment.StackTrace))
@@ -984,7 +1012,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1003,7 +1033,6 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -1028,6 +1057,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromDynamicQuery", System.Environment.StackTrace))
@@ -1044,7 +1074,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1063,78 +1095,8 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
             finally
             {
-
             }
         }
-
-#if (LINQ)
-        // This is used only to execute the Dynamic Query API
-        static private void LoadDataTableForLinqToSql(esDataRequest request, esDataResponse response)
-        {
-            SqlCeCommand cmd = null;
-
-            try
-            {
-                DataTable dataTable = new DataTable(request.ProviderMetadata.Destination);
-
-                cmd = request.LinqContext.GetCommand(request.LinqQuery) as SqlCeCommand;
-
-                response.LastQuery = cmd.CommandText;
-
-                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-
-                SqlCeDataAdapter da = new SqlCeDataAdapter();
-                da.SelectCommand = cmd;
-
-                try
-                {
-                    esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
-
-                    #region Profiling
-                    if (sTraceHandler != null)
-                    {
-                        using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadForLinqToSql", System.Environment.StackTrace))
-                        {
-                            try
-                            {
-                                da.Fill(dataTable);
-                            }
-                            catch (Exception ex)
-                            {
-                                esTrace.Exception = ex.Message;
-                                throw;
-                            }
-                        }
-                    }
-                    else
-                    #endregion
-                    {
-                        da.Fill(dataTable);
-                    }
-                }
-                finally
-                {
-                    esTransactionScope.DeEnlist(da.SelectCommand);
-                }
-
-                response.Table = dataTable;
-
-                if (request.Parameters != null)
-                {
-                    Shared.GatherReturnParameters(cmd, request, response);
-                }
-            }
-            catch (Exception)
-            {
-                CleanupCommand(cmd);
-                throw;
-            }
-            finally
-            {
-
-            }
-        }
-#endif
 
         static private DataTable SaveDynamicCollection(esDataRequest request)
         {
@@ -1209,6 +1171,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                             esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, packet, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1225,7 +1188,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(singleRow);
                             }
@@ -1297,6 +1262,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                             singleRow[0] = row;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, packet, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1313,7 +1279,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(singleRow);
                             }
@@ -1395,6 +1363,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, request.EntitySavePacket, "SaveEntityDynamic", System.Environment.StackTrace))
@@ -1411,7 +1380,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Update(singleRow);
                     }
@@ -1466,7 +1437,7 @@ namespace EntitySpaces.SqlServerCe4Provider
             return dataTable;
         }
 
-        static void SetOriginalValues(esDataRequest request, esEntitySavePacket packet, DataRow row, bool primaryKeysAndConcurrencyOnly)
+        private static void SetOriginalValues(esDataRequest request, esEntitySavePacket packet, DataRow row, bool primaryKeysAndConcurrencyOnly)
         {
             foreach (esColumnMetadata col in request.Columns)
             {
@@ -1482,7 +1453,7 @@ namespace EntitySpaces.SqlServerCe4Provider
             }
         }
 
-        static void SetModifiedValues(esDataRequest request, esEntitySavePacket packet, DataRow row)
+        private static void SetModifiedValues(esDataRequest request, esEntitySavePacket packet, DataRow row)
         {
             foreach (string column in packet.ModifiedColumns)
             {
@@ -1524,6 +1495,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                             object o = null;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1540,7 +1512,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 o = cmd.ExecuteScalar();
                             }
@@ -1593,6 +1567,7 @@ namespace EntitySpaces.SqlServerCe4Provider
                         try
                         {
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1609,7 +1584,9 @@ namespace EntitySpaces.SqlServerCe4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 rdr = cmd.ExecuteReader(CommandBehavior.SingleResult);
                             }

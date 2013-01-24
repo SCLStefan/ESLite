@@ -28,15 +28,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
-
+using System.Diagnostics;
+using System.Threading;
 using EntitySpaces.DynamicQuery;
 using EntitySpaces.Interfaces;
-
 using Npgsql;
-using System.Threading;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace EntitySpaces.Npgsql2Provider
 {
@@ -44,7 +42,6 @@ namespace EntitySpaces.Npgsql2Provider
     {
         public DataProvider()
         {
-
         }
 
         #region esTraceArguments
@@ -56,15 +53,18 @@ namespace EntitySpaces.Npgsql2Provider
             private sealed class esTraceParameter : ITraceParameter
             {
                 public string Name { get; set; }
+
                 public string Direction { get; set; }
+
                 public string ParamType { get; set; }
+
                 public string BeforeValue { get; set; }
+
                 public string AfterValue { get; set; }
             }
 
             public esTraceArguments()
             {
-
             }
 
             public esTraceArguments(esDataRequest request, IDbCommand cmd, string action, string callStack)
@@ -111,17 +111,29 @@ namespace EntitySpaces.Npgsql2Provider
             private IDbCommand command;
 
             public long PacketOrder { get; set; }
+
             public string Syntax { get; set; }
+
             public esDataRequest Request { get; set; }
+
             public int ThreadId { get; set; }
+
             public string Action { get; set; }
+
             public string CallStack { get; set; }
+
             public IDbCommand SqlCommand { get; set; }
+
             public string ApplicationName { get; set; }
+
             public string TraceChannel { get; set; }
+
             public long Duration { get; set; }
+
             public long Ticks { get; set; }
+
             public string Exception { get; set; }
+
             public List<ITraceParameter> Parameters { get; set; }
 
             private Stopwatch stopwatch;
@@ -153,7 +165,7 @@ namespace EntitySpaces.Npgsql2Provider
             }
         }
 
-        #endregion
+        #endregion esTraceArguments
 
         #region Profiling Logic
 
@@ -165,6 +177,7 @@ namespace EntitySpaces.Npgsql2Provider
             add { DataProvider.sTraceHandler += value; }
             remove { DataProvider.sTraceHandler -= value; }
         }
+
         static private event TraceEventHandler sTraceHandler;
 
         /// <summary>
@@ -186,9 +199,10 @@ namespace EntitySpaces.Npgsql2Provider
             get { return DataProvider.sTraceChannel; }
             set { DataProvider.sTraceChannel = value; }
         }
+
         static private string sTraceChannel = "Channel1";
 
-        #endregion
+        #endregion Profiling Logic
 
         /// <summary>
         /// This method acts as a delegate for esTransactionScope
@@ -242,12 +256,6 @@ namespace EntitySpaces.Npgsql2Provider
                         response = new esDataResponse();
                         NpgsqlCommand cmd1 = QueryBuilder.PrepareCommand(request);
                         response.LastQuery = cmd1.CommandText;
-                        break;
-
-                    case esQueryType.IQueryable:
-
-                        response = new esDataResponse();
-                        LoadDataTableForLinqToSql(request, response);
                         break;
 
                     case esQueryType.ManyToMany:
@@ -339,6 +347,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteNonQuery", System.Environment.StackTrace))
@@ -355,7 +364,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.RowsEffected = cmd.ExecuteNonQuery();
                     }
@@ -416,6 +427,7 @@ namespace EntitySpaces.Npgsql2Provider
                 cmd.Connection.Open();
 
                 #region Profiling
+
                 if (sTraceHandler != null)
                 {
                     using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteReader", System.Environment.StackTrace))
@@ -432,7 +444,9 @@ namespace EntitySpaces.Npgsql2Provider
                     }
                 }
                 else
-                #endregion
+
+                #endregion Profiling
+
                 {
                     response.DataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
@@ -484,6 +498,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteScalar", System.Environment.StackTrace))
@@ -500,7 +515,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.Scalar = cmd.ExecuteScalar();
                     }
@@ -584,7 +601,7 @@ namespace EntitySpaces.Npgsql2Provider
             return response;
         }
 
-        #endregion
+        #endregion IDataProvider Members
 
         static private esDataResponse LoadDataSetFromStoredProcedure(esDataRequest request)
         {
@@ -610,6 +627,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -626,7 +644,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -650,7 +670,6 @@ namespace EntitySpaces.Npgsql2Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -678,6 +697,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadDataSetFromText", System.Environment.StackTrace))
@@ -694,7 +714,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -718,7 +740,6 @@ namespace EntitySpaces.Npgsql2Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -747,6 +768,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -763,7 +785,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -787,7 +811,6 @@ namespace EntitySpaces.Npgsql2Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -816,6 +839,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromText", System.Environment.StackTrace))
@@ -832,7 +856,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -856,7 +882,6 @@ namespace EntitySpaces.Npgsql2Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -923,6 +948,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadManyToMany", System.Environment.StackTrace))
@@ -939,7 +965,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -958,7 +986,6 @@ namespace EntitySpaces.Npgsql2Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -983,6 +1010,7 @@ namespace EntitySpaces.Npgsql2Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromDynamicQuery", System.Environment.StackTrace))
@@ -999,7 +1027,9 @@ namespace EntitySpaces.Npgsql2Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1018,74 +1048,6 @@ namespace EntitySpaces.Npgsql2Provider
             }
             finally
             {
-
-            }
-        }
-
-        // This is used only to execute the Dynamic Query API
-        static private void LoadDataTableForLinqToSql(esDataRequest request, esDataResponse response)
-        {
-            NpgsqlCommand cmd = null;
-
-            try
-            {
-                DataTable dataTable = new DataTable(request.ProviderMetadata.Destination);
-
-                cmd = request.LinqContext.GetCommand(request.LinqQuery) as NpgsqlCommand;
-
-                response.LastQuery = cmd.CommandText;
-
-                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-                da.SelectCommand = cmd;
-
-                try
-                {
-                    esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
-
-                    #region Profiling
-                    if (sTraceHandler != null)
-                    {
-                        using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadForLinqToSql", System.Environment.StackTrace))
-                        {
-                            try
-                            {
-                                da.Fill(dataTable);
-                            }
-                            catch (Exception ex)
-                            {
-                                esTrace.Exception = ex.Message;
-                                throw;
-                            }
-                        }
-                    }
-                    else
-                    #endregion
-                    {
-                        da.Fill(dataTable);
-                    }
-                }
-                finally
-                {
-                    esTransactionScope.DeEnlist(da.SelectCommand);
-                }
-
-                response.Table = dataTable;
-
-                if (request.Parameters != null)
-                {
-                    Shared.GatherReturnParameters(cmd, request, response);
-                }
-            }
-            catch (Exception)
-            {
-                CleanupCommand(cmd);
-                throw;
-            }
-            finally
-            {
-
             }
         }
 
@@ -1110,6 +1072,7 @@ namespace EntitySpaces.Npgsql2Provider
                         exception = false;
 
                         #region Setup Commands
+
                         switch (packet.RowState)
                         {
                             case esDataRowState.Added:
@@ -1140,9 +1103,11 @@ namespace EntitySpaces.Npgsql2Provider
                             case esDataRowState.Unchanged:
                                 continue;
                         }
-                        #endregion
+
+                        #endregion Setup Commands
 
                         #region Preprocess Parameters
+
                         if (cmd.Parameters != null)
                         {
                             foreach (NpgsqlParameter param in cmd.Parameters)
@@ -1164,14 +1129,17 @@ namespace EntitySpaces.Npgsql2Provider
                                 }
                             }
                         }
-                        #endregion
+
+                        #endregion Preprocess Parameters
 
                         #region Execute Command
+
                         try
                         {
                             int count;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "SaveCollectionStoredProcedure", System.Environment.StackTrace))
@@ -1188,7 +1156,9 @@ namespace EntitySpaces.Npgsql2Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 count = cmd.ExecuteNonQuery();
                             }
@@ -1207,9 +1177,11 @@ namespace EntitySpaces.Npgsql2Provider
                                 throw;
                             }
                         }
-                        #endregion
+
+                        #endregion Execute Command
 
                         #region Postprocess Parameters
+
                         if (!exception && packet.RowState != esDataRowState.Deleted && cmd.Parameters != null)
                         {
                             foreach (NpgsqlParameter param in cmd.Parameters)
@@ -1224,7 +1196,8 @@ namespace EntitySpaces.Npgsql2Provider
                                 }
                             }
                         }
-                        #endregion
+
+                        #endregion Postprocess Parameters
                     }
 
                     scope.Complete();
@@ -1268,6 +1241,7 @@ namespace EntitySpaces.Npgsql2Provider
                 int count = 0;
 
                 #region Profiling
+
                 if (sTraceHandler != null)
                 {
                     using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "SaveEntityStoredProcedure", System.Environment.StackTrace))
@@ -1284,7 +1258,9 @@ namespace EntitySpaces.Npgsql2Provider
                     }
                 }
                 else
-                #endregion
+
+                #endregion Profiling
+
                 {
                     count = cmd.ExecuteNonQuery();
                 }
@@ -1356,6 +1332,7 @@ namespace EntitySpaces.Npgsql2Provider
                         int count;
 
                         #region Profiling
+
                         if (sTraceHandler != null)
                         {
                             using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1372,7 +1349,9 @@ namespace EntitySpaces.Npgsql2Provider
                             }
                         }
                         else
-                        #endregion
+
+                        #endregion Profiling
+
                         {
                             count = cmd.ExecuteNonQuery();
                         }
@@ -1447,6 +1426,7 @@ namespace EntitySpaces.Npgsql2Provider
                 int count = 0;
 
                 #region Profiling
+
                 if (sTraceHandler != null)
                 {
                     using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "SaveEntityDynamic", System.Environment.StackTrace))
@@ -1463,7 +1443,9 @@ namespace EntitySpaces.Npgsql2Provider
                     }
                 }
                 else
-                #endregion
+
+                #endregion Profiling
+
                 {
                     count = cmd.ExecuteNonQuery();
                 }

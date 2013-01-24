@@ -49,7 +49,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
     {
         public DataProvider()
         {
-
         }
 
         #region esTraceArguments
@@ -61,15 +60,18 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             private sealed class esTraceParameter : ITraceParameter
             {
                 public string Name { get; set; }
+
                 public string Direction { get; set; }
+
                 public string ParamType { get; set; }
+
                 public string BeforeValue { get; set; }
+
                 public string AfterValue { get; set; }
             }
 
             public esTraceArguments()
             {
-
             }
 
             public esTraceArguments(esDataRequest request, IDbCommand cmd, esEntitySavePacket packet, string action, string callStack)
@@ -181,17 +183,29 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             private IDbCommand command;
 
             public long PacketOrder { get; set; }
+
             public string Syntax { get; set; }
+
             public esDataRequest Request { get; set; }
+
             public int ThreadId { get; set; }
+
             public string Action { get; set; }
+
             public string CallStack { get; set; }
+
             public IDbCommand SqlCommand { get; set; }
+
             public string ApplicationName { get; set; }
+
             public string TraceChannel { get; set; }
+
             public long Duration { get; set; }
+
             public long Ticks { get; set; }
+
             public string Exception { get; set; }
+
             public List<ITraceParameter> Parameters { get; set; }
 
             private Stopwatch stopwatch;
@@ -223,7 +237,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
         }
 
-        #endregion
+        #endregion esTraceArguments
 
         #region Profiling Logic
 
@@ -235,6 +249,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             add { DataProvider.sTraceHandler += value; }
             remove { DataProvider.sTraceHandler -= value; }
         }
+
         static private event TraceEventHandler sTraceHandler;
 
         /// <summary>
@@ -256,9 +271,10 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             get { return DataProvider.sTraceChannel; }
             set { DataProvider.sTraceChannel = value; }
         }
+
         static private string sTraceChannel = "Channel1";
 
-        #endregion
+        #endregion Profiling Logic
 
         /// <summary>
         /// This method acts as a delegate for esTransactionScope
@@ -313,14 +329,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         SACommand cmd1 = QueryBuilder.PrepareCommand(request);
                         response.LastQuery = cmd1.CommandText;
                         break;
-
-#if (LINQ)
-                    case esQueryType.IQueryable:
-
-                        response = new esDataResponse();
-                        LoadDataTableForLinqToSql(request, response);
-                        break;
-#endif
 
                     case esQueryType.ManyToMany:
 
@@ -411,6 +419,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteNonQuery", System.Environment.StackTrace))
@@ -427,7 +436,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.RowsEffected = cmd.ExecuteNonQuery();
                     }
@@ -488,6 +499,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                 cmd.Connection.Open();
 
                 #region Profiling
+
                 if (sTraceHandler != null)
                 {
                     using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteReader", System.Environment.StackTrace))
@@ -504,7 +516,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     }
                 }
                 else
-                #endregion
+
+                #endregion Profiling
+
                 {
                     response.DataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
@@ -556,6 +570,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteScalar", System.Environment.StackTrace))
@@ -572,7 +587,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.Scalar = cmd.ExecuteScalar();
                     }
@@ -656,7 +673,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             return response;
         }
 
-        #endregion
+        #endregion IDataProvider Members
 
         static private esDataResponse LoadDataSetFromStoredProcedure(esDataRequest request)
         {
@@ -682,6 +699,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -698,7 +716,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -722,7 +742,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
 
             return response;
@@ -750,6 +769,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadDataSetFromText", System.Environment.StackTrace))
@@ -766,7 +786,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -790,7 +812,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
 
             return response;
@@ -819,6 +840,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -835,7 +857,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -859,7 +883,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
 
             return response;
@@ -888,6 +911,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromText", System.Environment.StackTrace))
@@ -904,7 +928,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -928,7 +954,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
 
             return response;
@@ -990,6 +1015,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadManyToMany", System.Environment.StackTrace))
@@ -1006,7 +1032,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1025,7 +1053,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
 
             return response;
@@ -1050,6 +1077,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromDynamicQuery", System.Environment.StackTrace))
@@ -1066,7 +1094,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1085,7 +1115,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
         }
 
@@ -1112,7 +1141,8 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                 {
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
-                    #region Profiling
+        #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadForLinqToSql", System.Environment.StackTrace))
@@ -1129,7 +1159,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1153,7 +1185,6 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
             finally
             {
-
             }
         }
 #endif
@@ -1170,7 +1201,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             {
                 rowMapping = new Dictionary<DataRow, esEntitySavePacket>();
             }
-      
+
             //================================================
             // Create the DataTable ...
             //================================================
@@ -1229,6 +1260,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         try
                         {
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "SaveCollectionStoredProcedure", System.Environment.StackTrace))
@@ -1245,7 +1277,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(dataTable);
                             }
@@ -1265,7 +1299,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                 {
                     DataRow[] errors = dataTable.GetErrors();
 
-                    foreach(DataRow rowWithError in errors)
+                    foreach (DataRow rowWithError in errors)
                     {
                         request.FireOnError(rowMapping[rowWithError], rowWithError.RowError);
                     }
@@ -1321,6 +1355,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "SaveEntityStoredProcedure", System.Environment.StackTrace))
@@ -1337,7 +1372,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Update(singleRow);
                     }
@@ -1439,6 +1476,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                             esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, packet, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1455,7 +1493,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(singleRow);
                             }
@@ -1514,6 +1554,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                             singleRow[0] = row;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, packet, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1530,7 +1571,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(singleRow);
                             }
@@ -1612,6 +1655,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, request.EntitySavePacket, "SaveEntityDynamic", System.Environment.StackTrace))
@@ -1628,7 +1672,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Update(singleRow);
                     }
@@ -1668,11 +1714,11 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             return dataTable;
         }
 
-        static void SetOriginalValues(esDataRequest request, esEntitySavePacket packet, DataRow row, bool primaryKeysAndConcurrencyOnly)
+        private static void SetOriginalValues(esDataRequest request, esEntitySavePacket packet, DataRow row, bool primaryKeysAndConcurrencyOnly)
         {
             foreach (esColumnMetadata col in request.Columns)
             {
-                if (primaryKeysAndConcurrencyOnly && 
+                if (primaryKeysAndConcurrencyOnly &&
                     (!col.IsInPrimaryKey && !col.IsConcurrency && !col.IsEntitySpacesConcurrency)) continue;
 
                 string columnName = col.Name;
@@ -1684,7 +1730,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
             }
         }
 
-        static void SetModifiedValues(esDataRequest request, esEntitySavePacket packet, DataRow row)
+        private static void SetModifiedValues(esDataRequest request, esEntitySavePacket packet, DataRow row)
         {
             foreach (string column in packet.ModifiedColumns)
             {
@@ -1727,6 +1773,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                             object o = null;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1743,7 +1790,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 o = cmd.ExecuteScalar();
                             }
@@ -1796,6 +1845,7 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                         try
                         {
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1812,7 +1862,9 @@ namespace EntitySpaces.SybaseSqlAnywhereProvider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 rdr = cmd.ExecuteReader(CommandBehavior.SingleResult);
                             }

@@ -28,16 +28,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
-
+using System.Diagnostics;
+using System.Threading;
 using EntitySpaces.DynamicQuery;
 using EntitySpaces.Interfaces;
-
 using VistaDB.Diagnostic;
 using VistaDB.Provider;
-using System.Threading;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace EntitySpaces.VistaDB4Provider
 {
@@ -45,7 +43,6 @@ namespace EntitySpaces.VistaDB4Provider
     {
         public DataProvider()
         {
-
         }
 
         #region esTraceArguments
@@ -57,15 +54,18 @@ namespace EntitySpaces.VistaDB4Provider
             private sealed class esTraceParameter : ITraceParameter
             {
                 public string Name { get; set; }
+
                 public string Direction { get; set; }
+
                 public string ParamType { get; set; }
+
                 public string BeforeValue { get; set; }
+
                 public string AfterValue { get; set; }
             }
 
             public esTraceArguments()
             {
-
             }
 
             public esTraceArguments(esDataRequest request, IDbCommand cmd, esEntitySavePacket packet, string action, string callStack)
@@ -177,17 +177,29 @@ namespace EntitySpaces.VistaDB4Provider
             private IDbCommand command;
 
             public long PacketOrder { get; set; }
+
             public string Syntax { get; set; }
+
             public esDataRequest Request { get; set; }
+
             public int ThreadId { get; set; }
+
             public string Action { get; set; }
+
             public string CallStack { get; set; }
+
             public IDbCommand SqlCommand { get; set; }
+
             public string ApplicationName { get; set; }
+
             public string TraceChannel { get; set; }
+
             public long Duration { get; set; }
+
             public long Ticks { get; set; }
+
             public string Exception { get; set; }
+
             public List<ITraceParameter> Parameters { get; set; }
 
             private Stopwatch stopwatch;
@@ -219,7 +231,7 @@ namespace EntitySpaces.VistaDB4Provider
             }
         }
 
-        #endregion
+        #endregion esTraceArguments
 
         #region Profiling Logic
 
@@ -231,6 +243,7 @@ namespace EntitySpaces.VistaDB4Provider
             add { DataProvider.sTraceHandler += value; }
             remove { DataProvider.sTraceHandler -= value; }
         }
+
         static private event TraceEventHandler sTraceHandler;
 
         /// <summary>
@@ -252,9 +265,10 @@ namespace EntitySpaces.VistaDB4Provider
             get { return DataProvider.sTraceChannel; }
             set { DataProvider.sTraceChannel = value; }
         }
+
         static private string sTraceChannel = "Channel1";
 
-        #endregion
+        #endregion Profiling Logic
 
         /// <summary>
         /// This method acts as a delegate for esTransactionScope
@@ -308,12 +322,6 @@ namespace EntitySpaces.VistaDB4Provider
                         response = new esDataResponse();
                         VistaDBCommand cmd1 = QueryBuilder.PrepareCommand(request);
                         response.LastQuery = cmd1.CommandText;
-                        break;
-
-                    case esQueryType.IQueryable:
-
-                        response = new esDataResponse();
-                        LoadDataTableForLinqToSql(request, response);
                         break;
 
                     case esQueryType.ManyToMany:
@@ -379,9 +387,9 @@ namespace EntitySpaces.VistaDB4Provider
             try
             {
                 cmd = new VistaDBCommand();
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null)	Shared.AddParameters(cmd, request);
-                
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
+
                 switch (request.QueryType)
                 {
                     case esQueryType.TableDirect:
@@ -405,6 +413,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteNonQuery", System.Environment.StackTrace))
@@ -421,7 +430,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.RowsEffected = cmd.ExecuteNonQuery();
                     }
@@ -453,8 +464,8 @@ namespace EntitySpaces.VistaDB4Provider
             try
             {
                 cmd = new VistaDBCommand();
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null) Shared.AddParameters(cmd, request);
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
 
                 switch (request.QueryType)
                 {
@@ -482,6 +493,7 @@ namespace EntitySpaces.VistaDB4Provider
                 cmd.Connection.Open();
 
                 #region Profiling
+
                 if (sTraceHandler != null)
                 {
                     using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteReader", System.Environment.StackTrace))
@@ -498,7 +510,9 @@ namespace EntitySpaces.VistaDB4Provider
                     }
                 }
                 else
-                #endregion
+
+                #endregion Profiling
+
                 {
                     response.DataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
@@ -520,8 +534,8 @@ namespace EntitySpaces.VistaDB4Provider
             try
             {
                 cmd = new VistaDBCommand();
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null) Shared.AddParameters(cmd, request);
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
 
                 switch (request.QueryType)
                 {
@@ -550,6 +564,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "ExecuteScalar", System.Environment.StackTrace))
@@ -566,7 +581,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         response.Scalar = cmd.ExecuteScalar();
                     }
@@ -650,8 +667,7 @@ namespace EntitySpaces.VistaDB4Provider
             return response;
         }
 
-        #endregion
-
+        #endregion IDataProvider Members
 
         static private esDataResponse LoadDataSetFromStoredProcedure(esDataRequest request)
         {
@@ -666,8 +682,8 @@ namespace EntitySpaces.VistaDB4Provider
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = Shared.CreateFullName(request);
 
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null) Shared.AddParameters(cmd, request);
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
 
                 VistaDBDataAdapter da = new VistaDBDataAdapter();
                 da.SelectCommand = cmd;
@@ -677,6 +693,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -693,7 +710,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -717,7 +736,6 @@ namespace EntitySpaces.VistaDB4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -733,8 +751,8 @@ namespace EntitySpaces.VistaDB4Provider
                 DataSet dataSet = new DataSet();
 
                 cmd = new VistaDBCommand();
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null) Shared.AddParameters(cmd, request);
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
 
                 VistaDBDataAdapter da = new VistaDBDataAdapter();
                 cmd.CommandText = request.QueryText;
@@ -745,6 +763,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadDataSetFromText", System.Environment.StackTrace))
@@ -761,7 +780,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataSet);
                     }
@@ -785,7 +806,6 @@ namespace EntitySpaces.VistaDB4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -803,8 +823,8 @@ namespace EntitySpaces.VistaDB4Provider
                 cmd = new VistaDBCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = Shared.CreateFullName(request);
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null) Shared.AddParameters(cmd, request);
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
 
                 VistaDBDataAdapter da = new VistaDBDataAdapter();
                 da.SelectCommand = cmd;
@@ -814,6 +834,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromStoredProcedure", System.Environment.StackTrace))
@@ -830,7 +851,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -854,7 +877,6 @@ namespace EntitySpaces.VistaDB4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -871,8 +893,8 @@ namespace EntitySpaces.VistaDB4Provider
 
                 cmd = new VistaDBCommand();
                 cmd.CommandType = CommandType.Text;
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-                if(request.Parameters != null) Shared.AddParameters(cmd, request);
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.Parameters != null) Shared.AddParameters(cmd, request);
 
                 VistaDBDataAdapter da = new VistaDBDataAdapter();
                 cmd.CommandText = request.QueryText;
@@ -883,6 +905,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromText", System.Environment.StackTrace))
@@ -899,7 +922,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -918,7 +943,6 @@ namespace EntitySpaces.VistaDB4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -935,12 +959,12 @@ namespace EntitySpaces.VistaDB4Provider
 
                 cmd = new VistaDBCommand();
                 cmd.CommandType = CommandType.Text;
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
 
                 string mmQuery = request.QueryText;
 
                 string[] sections = mmQuery.Split('|');
-                string[] tables  = sections[0].Split(',');
+                string[] tables = sections[0].Split(',');
                 string[] columns = sections[1].Split(',');
 
                 // We build the query, we don't use Delimiters to avoid tons of extra concatentation
@@ -969,6 +993,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadManyToMany", System.Environment.StackTrace))
@@ -985,7 +1010,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1004,7 +1031,6 @@ namespace EntitySpaces.VistaDB4Provider
             }
             finally
             {
-
             }
 
             return response;
@@ -1017,7 +1043,7 @@ namespace EntitySpaces.VistaDB4Provider
             {
                 response.LastQuery = cmd.CommandText;
 
-                if(request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
+                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
 
                 DataTable dataTable = new DataTable(request.ProviderMetadata.Destination);
 
@@ -1029,6 +1055,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadFromDynamicQuery", System.Environment.StackTrace))
@@ -1045,7 +1072,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Fill(dataTable);
                     }
@@ -1064,74 +1093,6 @@ namespace EntitySpaces.VistaDB4Provider
             }
             finally
             {
-
-            }
-        }
-
-        // This is used only to execute the Dynamic Query API
-        static private void LoadDataTableForLinqToSql(esDataRequest request, esDataResponse response)
-        {
-            VistaDBCommand cmd = null;
-
-            try
-            {
-                DataTable dataTable = new DataTable(request.ProviderMetadata.Destination);
-
-                cmd = request.LinqContext.GetCommand(request.LinqQuery) as VistaDBCommand;
-
-                response.LastQuery = cmd.CommandText;
-
-                if (request.CommandTimeout != null) cmd.CommandTimeout = request.CommandTimeout.Value;
-
-                VistaDBDataAdapter da = new VistaDBDataAdapter();
-                da.SelectCommand = cmd;
-
-                try
-                {
-                    esTransactionScope.Enlist(da.SelectCommand, request.ConnectionString, CreateIDbConnectionDelegate);
-
-                    #region Profiling
-                    if (sTraceHandler != null)
-                    {
-                        using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "LoadForLinqToSql", System.Environment.StackTrace))
-                        {
-                            try
-                            {
-                                da.Fill(dataTable);
-                            }
-                            catch (Exception ex)
-                            {
-                                esTrace.Exception = ex.Message;
-                                throw;
-                            }
-                        }
-                    }
-                    else
-                    #endregion
-                    {
-                        da.Fill(dataTable);
-                    }
-                }
-                finally
-                {
-                    esTransactionScope.DeEnlist(da.SelectCommand);
-                }
-
-                response.Table = dataTable;
-
-                if (request.Parameters != null)
-                {
-                    Shared.GatherReturnParameters(cmd, request, response);
-                }
-            }
-            catch
-            {
-                CleanupCommand(cmd);
-                throw;
-            }
-            finally
-            {
-
             }
         }
 
@@ -1218,6 +1179,7 @@ namespace EntitySpaces.VistaDB4Provider
                             esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, packet, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1234,7 +1196,9 @@ namespace EntitySpaces.VistaDB4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(singleRow);
                             }
@@ -1308,6 +1272,7 @@ namespace EntitySpaces.VistaDB4Provider
                             singleRow[0] = row;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, packet, "SaveCollectionDynamic", System.Environment.StackTrace))
@@ -1324,7 +1289,9 @@ namespace EntitySpaces.VistaDB4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 da.Update(singleRow);
                             }
@@ -1408,6 +1375,7 @@ namespace EntitySpaces.VistaDB4Provider
                     esTransactionScope.Enlist(cmd, request.ConnectionString, CreateIDbConnectionDelegate);
 
                     #region Profiling
+
                     if (sTraceHandler != null)
                     {
                         using (esTraceArguments esTrace = new esTraceArguments(request, cmd, request.EntitySavePacket, "SaveEntityDynamic", System.Environment.StackTrace))
@@ -1424,7 +1392,9 @@ namespace EntitySpaces.VistaDB4Provider
                         }
                     }
                     else
-                    #endregion
+
+                    #endregion Profiling
+
                     {
                         da.Update(singleRow);
                     }
@@ -1481,7 +1451,7 @@ namespace EntitySpaces.VistaDB4Provider
             return dataTable;
         }
 
-        static void SetOriginalValues(esDataRequest request, esEntitySavePacket packet, DataRow row, bool primaryKeysAndConcurrencyOnly)
+        private static void SetOriginalValues(esDataRequest request, esEntitySavePacket packet, DataRow row, bool primaryKeysAndConcurrencyOnly)
         {
             foreach (esColumnMetadata col in request.Columns)
             {
@@ -1497,7 +1467,7 @@ namespace EntitySpaces.VistaDB4Provider
             }
         }
 
-        static void SetModifiedValues(esDataRequest request, esEntitySavePacket packet, DataRow row)
+        private static void SetModifiedValues(esDataRequest request, esEntitySavePacket packet, DataRow row)
         {
             foreach (string column in packet.ModifiedColumns)
             {
@@ -1538,6 +1508,7 @@ namespace EntitySpaces.VistaDB4Provider
                             object o = null;
 
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1554,7 +1525,9 @@ namespace EntitySpaces.VistaDB4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 o = cmd.ExecuteScalar();
                             }
@@ -1585,6 +1558,7 @@ namespace EntitySpaces.VistaDB4Provider
                         object o = null;
 
                         #region Profiling
+
                         if (sTraceHandler != null)
                         {
                             using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1601,7 +1575,9 @@ namespace EntitySpaces.VistaDB4Provider
                             }
                         }
                         else
-                        #endregion
+
+                        #endregion Profiling
+
                         {
                             o = cmd.ExecuteScalar();
                         }
@@ -1646,6 +1622,7 @@ namespace EntitySpaces.VistaDB4Provider
                         try
                         {
                             #region Profiling
+
                             if (sTraceHandler != null)
                             {
                                 using (esTraceArguments esTrace = new esTraceArguments(request, cmd, "OnRowUpdated", System.Environment.StackTrace))
@@ -1662,7 +1639,9 @@ namespace EntitySpaces.VistaDB4Provider
                                 }
                             }
                             else
-                            #endregion
+
+                            #endregion Profiling
+
                             {
                                 rdr = cmd.ExecuteReader(CommandBehavior.SingleResult);
                             }
@@ -1695,9 +1674,9 @@ namespace EntitySpaces.VistaDB4Provider
 
                         switch (Type.GetTypeCode(o.GetType()))
                         {
-                            case TypeCode.Int16:  v = ((System.Int16)o) + 1; break;
-                            case TypeCode.Int32:  v = ((System.Int32)o) + 1; break;
-                            case TypeCode.Int64:  v = ((System.Int64)o) + 1; break;
+                            case TypeCode.Int16: v = ((System.Int16)o) + 1; break;
+                            case TypeCode.Int32: v = ((System.Int32)o) + 1; break;
+                            case TypeCode.Int64: v = ((System.Int64)o) + 1; break;
                             case TypeCode.UInt16: v = ((System.UInt16)o) + 1; break;
                             case TypeCode.UInt32: v = ((System.UInt32)o) + 1; break;
                             case TypeCode.UInt64: v = ((System.UInt64)o) + 1; break;
