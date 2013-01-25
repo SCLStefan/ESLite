@@ -647,6 +647,7 @@ namespace EntitySpaces.Core
             }
         }
 
+		#if (!MonoTouch)
         event ListChangedEventHandler IBindingList.ListChanged
         {
             add
@@ -664,6 +665,7 @@ namespace EntitySpaces.Core
                 onListChangedEvent -= value;
             }
         }
+		#endif
 
         void IBindingList.RemoveIndex(PropertyDescriptor property)
         {

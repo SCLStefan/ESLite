@@ -29,12 +29,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 using System.Collections.Generic;
+#if (!MonoTouch)
 using System.Windows.Data;
-
+#endif
 
 namespace EntitySpaces.DynamicQuery
 {
-    public class esExtraPropertyBinder : IValueConverter
+    public class esExtraPropertyBinder 
+#if (!MonoTouch)
+		: IValueConverter
+#endif
     {
         Dictionary<string, object> extraColumns = null;
 
