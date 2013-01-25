@@ -100,6 +100,10 @@
       <Project>{B13AC54D-1CEE-4B91-BEAE-98CF0A4AA180}</Project>
       <Name>EntitySpaces.Interfaces40</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XDMessaging\XDMessaging40.csproj">
+      <Project>{EFAAE69D-F65D-4247-81AA-440E18C3336F}</Project>
+      <Name>XDMessaging40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
