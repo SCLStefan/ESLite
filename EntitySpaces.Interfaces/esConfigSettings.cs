@@ -58,7 +58,7 @@ namespace EntitySpaces.Interfaces
     /// </remarks>
     /// 
 
-    #if (!WindowsCE)
+    #if (!MonoTouch)
     public sealed class esConfigSettings : ConfigurationSection
     {
         private esConfigSettings()

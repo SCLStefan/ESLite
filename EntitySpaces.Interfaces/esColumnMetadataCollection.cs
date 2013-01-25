@@ -223,9 +223,7 @@ namespace EntitySpaces.Interfaces
         public AuditingInfo ModifiedBy;
 
         #region Nested Classes
-#if (!WindowsCE)
         [Serializable]
-#endif
         public class SpecialDate
         {
             public bool IsEnabled;
@@ -242,9 +240,7 @@ namespace EntitySpaces.Interfaces
             }
         }
 
-#if (!WindowsCE)
         [Serializable]
-#endif
         public class AuditingInfo
         {
             public bool IsEnabled;
