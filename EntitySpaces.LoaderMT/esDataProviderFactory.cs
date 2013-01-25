@@ -120,17 +120,6 @@ namespace EntitySpaces.LoaderMT
                         throw new Exception("Unable to Find " + providerName + ".dll");
                     }
 
-                case "EntitySpaces.VistaDBProvider":
-
-                    try
-                    {
-                        return LoadVistaDBProvider(providerClass);
-                    }
-                    catch
-                    {
-                        throw new Exception("Unable to Find " + providerName + ".dll");
-                    }
-
                 case "EntitySpaces.VistaDB4Provider":
 
                     try
@@ -226,14 +215,6 @@ namespace EntitySpaces.LoaderMT
                 mySqlClientProvider = new EntitySpaces.MySqlClientProvider.DataProvider();
 
             return mySqlClientProvider;
-        }
-
-        private IDataProvider LoadVistaDBProvider(string providerClass)
-        {
-            if (vistaDBProvider == null)
-                vistaDBProvider = new EntitySpaces.VistaDBProvider.DataProvider();
-
-            return vistaDBProvider;
         }
 
         private IDataProvider LoadVistaDB4Provider(string providerClass)
