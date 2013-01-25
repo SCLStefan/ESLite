@@ -76,10 +76,8 @@ namespace EntitySpaces.Core
     /// }
     /// </code>
     /// </remarks>
-#if (!WindowsCE)
     [DefaultProperty("Indexer")]
     [CollectionDataContract]
-#endif
     [Serializable]
     public abstract partial class esEntityCollection<T> : esEntityCollectionBase, ICommittable
         where T : esEntity, new()
@@ -93,10 +91,8 @@ namespace EntitySpaces.Core
         /// <summary>
         /// Called internally when debugging, allows you to easily view the collection while debugging
         /// </summary>
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden | DebuggerBrowsableState.Never)]
         [Browsable(false)]
-#endif
         virtual protected BindingList<T> Debug
         {
             get
@@ -277,26 +273,20 @@ namespace EntitySpaces.Core
                 // This entity now takes on the Collection's Connection info
                 entity.es.Connection.Name = this.es.Connection.Name;
 
-#if (!WindowsCE)
                 if (entitiesFilterBackup != null)
                 {
                     entitiesFilterBackup.Add((T)entity);
                 }
                 else
                 {
-#endif
                     entities.Add((T)entity);
-#if (!WindowsCE)
                 }
-#endif
             }
 
-#if (!WindowsCE)
             if (currentFilter != null)
             {
                 this.Filter = currentFilter;
             }
-#endif
 
             collectionToAdd.entities.Clear();
             collectionToAdd.es.Connection = null;
@@ -448,7 +438,7 @@ namespace EntitySpaces.Core
         }
 
         #region Filter
-#if (!WindowsCE)
+
         /// <summary>
         /// Use LINQ expressions to filter your collection
         /// </summary>
@@ -466,9 +456,8 @@ namespace EntitySpaces.Core
         /// coll.Filter = coll.AsQueryable().Where(d => d.FirstName == null).OrderByDescending(d => d.LastName);
         /// </code>
         /// </remarks>    
-#if (!WindowsCE)        
+  
         [Browsable(false)]
-#endif
         public IQueryable<T> Filter
         {
             get
@@ -496,9 +485,7 @@ namespace EntitySpaces.Core
         /// <summary>
         /// Returns true if the collection is currently filtered via the Filter property
         /// </summary>
-#if (!WindowsCE)
         [Browsable(false)]
-#endif
         public bool HasFilter
         {
             get
@@ -547,26 +534,13 @@ namespace EntitySpaces.Core
 
             RaiseListChangeEvents_Restore();
         }
-#else
-        /// <summary>
-        /// Returns true if the collection is currently filtered via the Filter property
-        /// </summary>
-        public bool HasFilter
-        {
-            get
-            {
-                return false;
-            }
-        }
-#endif
+
         #endregion
 
         /// <summary>
         /// The number of entities in the collection
         /// </summary>
-#if (!WindowsCE)
         [Browsable(false)]
-#endif
         public override int Count
         {
             get
@@ -625,9 +599,7 @@ namespace EntitySpaces.Core
         /// </summary>
         /// <param name="index">The zero based index of the desired entity</param>
         /// <returns>The entity</returns>
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
-#endif
         public T this[int index]
         {
             get
@@ -872,7 +844,6 @@ namespace EntitySpaces.Core
         {
             get
             {
-#if (!WindowsCE)
                 if (deletedEntities == null)
                 {
                     return from e in entities where e.rowError != null select e;
@@ -882,30 +853,6 @@ namespace EntitySpaces.Core
                     return (from e in entities where e.rowError != null select e).Union
                            (from d in deletedEntities where d.rowError != null select d);
                 }
-#else
-                List<T> errors = new List<T>();
-
-                foreach (T entity in entities)
-                {
-                    if (entity.rowError != null)
-                    {
-                        errors.Add(entity);
-                    }
-                }
-
-                if (deletedEntities != null)
-                {
-                    foreach (T entity in deletedEntities)
-                    {
-                        if (entity.rowError != null)
-                        {
-                            errors.Add(entity);
-                        }
-                    }
-                }
-
-                return errors;
-#endif
             }
         }
 
@@ -3092,9 +3039,7 @@ namespace EntitySpaces.Core
         }
 
         [NonSerialized]
-#if (!WindowsCE)
         [IgnoreDataMember]
-#endif
         private ListChangedEventHandler onListChangedEvent;
 
         #endregion
@@ -3123,9 +3068,7 @@ namespace EntitySpaces.Core
         }
 
         [NonSerialized]
-#if (!WindowsCE)
         [IgnoreDataMember]
-#endif
         private esUpdateViewEventHandler updateViewNotification;
 
 #endregion 
@@ -3151,9 +3094,7 @@ namespace EntitySpaces.Core
         private int saveNestingCount = 0;
 
         [NonSerialized]
-#if (!WindowsCE)
         [IgnoreDataMember]
-#endif
         private int listChangedEventHandlerCount;
 
 
@@ -3162,10 +3103,8 @@ namespace EntitySpaces.Core
 
         internal IList<T> deletedEntities;
 
-#if (!WindowsCE)
         [NonSerialized]
         internal IQueryable<T> currentFilter;
-#endif
 
         [NonSerialized]
         private T objectCreator = new T();

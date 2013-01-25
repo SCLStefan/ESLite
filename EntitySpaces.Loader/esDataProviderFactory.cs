@@ -61,21 +61,12 @@ namespace EntitySpaces.Loader
                 if (!providerCache.ContainsKey(providerName))
                 {
                     Assembly asm = Assembly.Load(providerName);
-#if (!WindowsCE)
                     Module[] mods = asm.GetModules(false);
-#else
-                    Module[] mods = asm.GetModules();
-#endif
 
                     Module mod = mods[0];
                     Type type = mod.GetType(providerName + '.' + providerClass);
 
-#if (!WindowsCE)
                     ctor = type.GetConstructor(new Type[0]);
-#else
-                    ConstructorInfo[] ctors = type.GetConstructors();
-                    ctor = ctors[0];
-#endif
 
                     providerCache[providerName] = ctor;
                 }

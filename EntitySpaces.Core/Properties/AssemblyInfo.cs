@@ -31,22 +31,16 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-#if (!WindowsCE) 
 using System.Security;
-#endif
 
 [assembly: CLSCompliant(true)]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-#if (!WindowsCE) 
+
 [assembly: AssemblyTitle("EntitySpaces.Core")]
 [assembly: AllowPartiallyTrustedCallers]
-#else
-[assembly: AssemblyTitle("EntitySpaces.Core.CF")]
-#endif
 [assembly: AssemblyDescription("The EntitySpaces Core Business Class Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EntitySpaces, LLC")]
@@ -73,6 +67,5 @@ using System.Security;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("2012.1.0930.0")]
-#if (!WindowsCE) 
 [assembly: AssemblyFileVersion("2012.1.0930.0")]
-#endif
+

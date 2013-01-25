@@ -79,9 +79,8 @@ namespace EntitySpaces.Core
             }
         }
 
-#if (!WindowsCE)
+
         [DebuggerBrowsable(DebuggerBrowsableState.Collapsed)]
-#endif
         public T this[int index]
         {
             get
@@ -95,7 +94,6 @@ namespace EntitySpaces.Core
         }
 
         #region Filter
-#if (!WindowsCE)
         public IQueryable<T> Filter
         {
             set
@@ -152,7 +150,7 @@ namespace EntitySpaces.Core
 
             RaiseListChangeEvents_Restore();
         }
-#endif
+
         #endregion
 
         #region RaiseListChangedEvents Processing

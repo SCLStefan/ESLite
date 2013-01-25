@@ -56,9 +56,7 @@ namespace EntitySpaces.Interfaces
     ///	}
     /// </code>
     /// </remarks>
-    #if (!WindowsCE)
     [Serializable] 
-    #endif
     public partial class esColumnMetadataCollection : IEnumerable 
     {
         public esColumnMetadataCollection() 
@@ -204,29 +202,19 @@ namespace EntitySpaces.Interfaces
 
         #endregion
 
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-#endif
         private List<esColumnMetadata> list = new List<esColumnMetadata>();
 
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-#endif
         private List<esColumnMetadata> primaryKeys = new List<esColumnMetadata>();
 
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-#endif
         private Dictionary<System.String, esColumnMetadata> hashByColumnName = new Dictionary<string, esColumnMetadata>(StringComparer.OrdinalIgnoreCase);
 
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-#endif
         private Dictionary<System.String, esColumnMetadata> hashByPropertyName = new Dictionary<string, esColumnMetadata>();
 
-#if (!WindowsCE)
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-#endif
         private bool thereAreDefaults;
 
         public SpecialDate DateAdded;

@@ -154,9 +154,7 @@ namespace EntitySpaces.Interfaces
     /// emps.Query.Load();
     /// </code>
     /// </example>
-    #if (!WindowsCE)
     [Serializable] 
-    #endif
     public class esDynamicQuery : esDynamicQuerySerializable
     {
         /// <summary>
