@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.js40", "Entity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDMessaging40", "XDMessaging\XDMessaging40.csproj", "{EFAAE69D-F65D-4247-81AA-440E18C3336F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.LoaderMonoTouch", "EntitySpaces.LoaderMonoTouch\EntitySpaces.LoaderMonoTouch.csproj", "{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -493,6 +495,22 @@ Global
 		{EFAAE69D-F65D-4247-81AA-440E18C3336F}.Release|x64.Build.0 = Release|x64
 		{EFAAE69D-F65D-4247-81AA-440E18C3336F}.Release|x86.ActiveCfg = Release|x86
 		{EFAAE69D-F65D-4247-81AA-440E18C3336F}.Release|x86.Build.0 = Release|x86
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugDavidTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugDavidTests|Any CPU.Build.0 = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugDavidTests|x64.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugDavidTests|x86.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugMikeTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugMikeTests|Any CPU.Build.0 = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugMikeTests|x64.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.DebugMikeTests|x86.ActiveCfg = Debug|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
