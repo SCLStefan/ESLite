@@ -55,11 +55,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EntitySpaces.DynamicQuery\EntitySpaces.DynamicQuery40.csproj">
+    <ProjectReference Include="..\..\EntitySpaces.DynamicQuery\EntitySpaces.DynamicQuery40.csproj">
       <Project>{9aa003d3-6dbb-4c6c-bdc5-f3e1f3bbb0dd}</Project>
       <Name>EntitySpaces.DynamicQuery40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EntitySpaces.Interfaces\EntitySpaces.Interfaces40.csproj">
+    <ProjectReference Include="..\..\EntitySpaces.Interfaces\EntitySpaces.Interfaces40.csproj">
       <Project>{b13ac54d-1cee-4b91-beae-98cf0a4aa180}</Project>
       <Name>EntitySpaces.Interfaces40</Name>
     </ProjectReference>

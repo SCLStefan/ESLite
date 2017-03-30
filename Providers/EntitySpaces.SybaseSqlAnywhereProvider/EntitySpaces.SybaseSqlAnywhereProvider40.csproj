@@ -87,8 +87,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="iAnywhere.Data.SQLAnywhere, Version=11.0.0.14902, Culture=neutral, PublicKeyToken=f222fc4333e0d400, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="iAnywhere.Data.SQLAnywhere.v4.0, Version=16.0.0.20434, Culture=neutral, PublicKeyToken=f222fc4333e0d400, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iAnywhere.Data.SQLAnywhere.v4.5.16.0.0.20433\lib\net40\iAnywhere.Data.SQLAnywhere.v4.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -132,6 +132,9 @@
       <Project>{B13AC54D-1CEE-4B91-BEAE-98CF0A4AA180}</Project>
       <Name>EntitySpaces.Interfaces40</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -169,10 +169,6 @@
       <Project>{6FD3D08A-4B3E-416D-ABBB-F0772222F7BF}</Project>
       <Name>EntitySpaces.SybaseSqlAnywhereProvider40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Providers\EntitySpaces.VistaDB4Provider\EntitySpaces.VistaDB4Provider40.csproj">
-      <Project>{6C9AB015-3E08-473E-87C4-11F1CBC38823}</Project>
-      <Name>EntitySpaces.VistaDB4Provider40</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

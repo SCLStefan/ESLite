@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.Core40", "EntitySpaces.Core\EntitySpaces.Core40.csproj", "{81B80C15-74F7-480A-B3C1-D8792785B357}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.Interfaces40", "EntitySpaces.Interfaces\EntitySpaces.Interfaces40.csproj", "{B13AC54D-1CEE-4B91-BEAE-98CF0A4AA180}"
@@ -25,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.OracleClientPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.SybaseSqlAnywhereProvider40", "Providers\EntitySpaces.SybaseSqlAnywhereProvider\EntitySpaces.SybaseSqlAnywhereProvider40.csproj", "{6FD3D08A-4B3E-416D-ABBB-F0772222F7BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.VistaDB4Provider40", "Providers\EntitySpaces.VistaDB4Provider\EntitySpaces.VistaDB4Provider40.csproj", "{6C9AB015-3E08-473E-87C4-11F1CBC38823}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.MySqlClientProvider40", "Providers\EntitySpaces.MySqlClientProvider\EntitySpaces.MySqlClientProvider40.csproj", "{FA7C329C-870C-4EEA-B5AC-E8BAFF590623}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.MSAccessProvider40", "Providers\EntitySpaces.MSAccessProvider\EntitySpaces.MSAccessProvider40.csproj", "{D39C62AC-C3BE-433F-95DB-6175703B092E}"
@@ -44,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDMessaging40", "XDMessaging\XDMessaging40.csproj", "{EFAAE69D-F65D-4247-81AA-440E18C3336F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.LoaderMonoTouch", "EntitySpaces.LoaderMonoTouch\EntitySpaces.LoaderMonoTouch.csproj", "{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySpaces.OracleManagedClientProvider40", "Providers\EntitySpaces.OracleManagedClientProvider40\EntitySpaces.OracleManagedClientProvider40.csproj", "{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -317,26 +319,6 @@ Global
 		{6FD3D08A-4B3E-416D-ABBB-F0772222F7BF}.Release|x64.Build.0 = Release|x64
 		{6FD3D08A-4B3E-416D-ABBB-F0772222F7BF}.Release|x86.ActiveCfg = Release|x86
 		{6FD3D08A-4B3E-416D-ABBB-F0772222F7BF}.Release|x86.Build.0 = Release|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Debug|x64.ActiveCfg = Debug|x64
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Debug|x64.Build.0 = Debug|x64
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Debug|x86.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Debug|x86.Build.0 = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugDavidTests|Any CPU.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugDavidTests|x64.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugDavidTests|x86.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugDavidTests|x86.Build.0 = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugMikeTests|Any CPU.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugMikeTests|x64.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugMikeTests|x86.ActiveCfg = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.DebugMikeTests|x86.Build.0 = Debug|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Release|x64.ActiveCfg = Release|x64
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Release|x64.Build.0 = Release|x64
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Release|x86.ActiveCfg = Release|x86
-		{6C9AB015-3E08-473E-87C4-11F1CBC38823}.Release|x86.Build.0 = Release|x86
 		{FA7C329C-870C-4EEA-B5AC-E8BAFF590623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA7C329C-870C-4EEA-B5AC-E8BAFF590623}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA7C329C-870C-4EEA-B5AC-E8BAFF590623}.Debug|x64.ActiveCfg = Debug|x64
@@ -511,6 +493,30 @@ Global
 		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|x64.ActiveCfg = Release|Any CPU
 		{F25FD7E5-2A15-4A81-B5FC-C65CE9F016DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Debug|x64.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Debug|x86.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugDavidTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugDavidTests|Any CPU.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugDavidTests|x64.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugDavidTests|x64.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugDavidTests|x86.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugDavidTests|x86.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugMikeTests|Any CPU.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugMikeTests|Any CPU.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugMikeTests|x64.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugMikeTests|x64.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugMikeTests|x86.ActiveCfg = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.DebugMikeTests|x86.Build.0 = Debug|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Release|x64.ActiveCfg = Release|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Release|x64.Build.0 = Release|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Release|x86.ActiveCfg = Release|Any CPU
+		{10624D4E-F3F6-4D3E-B93D-0AC443E288AA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
